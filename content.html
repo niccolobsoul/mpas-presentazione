@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progetto MPAS — Presentazione per Martina</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #fc4c02;
+    --orange-light: #fd7d40;
+    --orange-glow: rgba(252, 76, 2, 0.08);
+    --lavender: #ae7eca;
+    --lavender-soft: rgba(174, 126, 202, 0.10);
+    --navy: #002d72;
+    --navy-mid: #003d8f;
+    --cream: #F7F3EE;
+    --cream-deep: #EDE6DC;
+    --sand: #D4C5B0;
+    --tan: #ca916c;
+    --tan-glow: rgba(202, 145, 108, 0.12);
+    --text: #1a1e2e;
+    --text-soft: #5a6070;
+    --text-muted: #8a8e9e;
+    --white-05: rgba(255,255,255,0.05);
+    --white-08: rgba(255,255,255,0.08);
+    --white-12: rgba(255,255,255,0.12);
+    --white-30: rgba(255,255,255,0.30);
+    --white-50: rgba(255,255,255,0.50);
+    --white-70: rgba(255,255,255,0.70);
+    --white-85: rgba(255,255,255,0.85);
+
+    --font-display: 'Nexa', 'Outfit', sans-serif;
+    --font-body: 'Nexa', 'Outfit', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--orange), var(--tan));
+    z-index: 1000;
+    transition: width 0.1s linear;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 72px;
+    position: relative;
+    background: var(--cream);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -15%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--lavender-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 80px);
+    font-weight: 700;
+    line-height: 1.08;
+    color: var(--text);
+    max-width: 750px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s ease 0.12s both;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--orange);
+  }
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: normal;
+    color: var(--text-soft);
+    max-width: 520px;
+    line-height: 1.5;
+    margin-bottom: 56px;
+    animation: fadeUp 0.6s ease 0.24s both;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--sand);
+    animation: fadeUp 0.6s ease 0.36s both;
+  }
+  .hero-meta-item {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .hero-meta-item span {
+    display: block;
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 4px;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 72px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    animation: fadeUp 0.6s ease 0.5s both;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 32px;
+    background: var(--sand);
+    margin-top: 8px;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 72px;
+  }
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    max-width: 650px;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--text-soft);
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 56px;
+  }
+
+  /* ── VISION ── */
+  .vision-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  .stat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.025);
+  }
+  .stat-card .stat-value {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--orange);
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-label {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+  .vision-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 900px;
+  }
+  .vision-body p {
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.8;
+  }
+  .vision-body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── TARGET ── */
+  .target-section {
+    background: var(--cream-deep);
+  }
+  .target-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .target-profile {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 36px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+  }
+  .target-profile .tp-name {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .target-profile .tp-demo {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-style: italic;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .target-profile .tp-desc {
+    font-size: 14.5px;
+    color: var(--text-soft);
+    line-height: 1.8;
+  }
+  .target-profile .tp-quote {
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--orange-glow);
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--orange);
+    line-height: 1.5;
+  }
+  .target-pain {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .pain-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px 28px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.025);
+  }
+  .pain-card h4 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .pain-card ul {
+    list-style: none;
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.85;
+  }
+  .pain-card ul li { padding-left: 16px; position: relative; }
+  .pain-card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sand);
+  }
+
+  /* ── WHAT SHE WANTS ── */
+  .wants-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 40px;
+  }
+  .want-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px 20px;
+    border: 1px solid rgba(0,0,0,0.04);
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.025);
+  }
+  .want-card .want-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--lavender);
+    margin-bottom: 8px;
+  }
+  .want-card p {
+    font-size: 12.5px;
+    color: var(--text-soft);
+    line-height: 1.55;
+  }
+
+  /* ── PLATFORM ── */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .plat-card {
+    border-radius: 18px;
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .plat-card.corpo {
+    background: linear-gradient(145deg, var(--navy) 0%, #001a45 100%);
+    color: #fff;
+  }
+  .plat-card.viso {
+    background: linear-gradient(145deg, var(--orange) 0%, #d43d00 100%);
+    color: #fff;
+  }
+  .plat-card .plat-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .plat-card h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .plat-card .plat-sub {
+    font-size: 14px;
+    opacity: 0.7;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+  .plat-card ul {
+    list-style: none;
+    font-size: 14px;
+    line-height: 2;
+    opacity: 0.9;
+  }
+  .plat-card ul li::before {
+    content: '+ ';
+    opacity: 0.5;
+    font-weight: 600;
+  }
+  .plat-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .plat-feat {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px 22px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.025);
+  }
+  .plat-feat h4 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .plat-feat p {
+    font-size: 12.5px;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  /* ── METHOD (DARK) ── */
+  .method-section {
+    background: var(--navy);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 72px;
+  }
+  .method-section::before {
+    content: 'PADRONANZA';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(100px, 16vw, 220px);
+    font-weight: 700;
+    color: rgba(255,255,255,0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.05em;
+  }
+  .method-section .section-label { color: var(--orange-light); }
+  .method-section .section-title { color: #fff; max-width: 700px; }
+  .method-section .section-desc { color: var(--white-50); }
+
+  .method-quote {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.2vw, 38px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--orange-light);
+    max-width: 680px;
+    line-height: 1.35;
+    margin-bottom: 64px;
+    position: relative;
+    padding-left: 32px;
+    border-left: 3px solid var(--orange);
+  }
+
+  .method-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 64px;
+  }
+  .compare-card {
+    border-radius: 18px;
+    padding: 36px 32px;
+    position: relative;
+  }
+  .compare-card.generic {
+    background: var(--white-05);
+    border: 1px solid var(--white-08);
+  }
+  .compare-card.metodo {
+    background: linear-gradient(145deg, rgba(252,76,2,0.15) 0%, rgba(252,76,2,0.06) 100%);
+    border: 1px solid rgba(252,76,2,0.25);
+  }
+  .compare-card .cc-label {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .compare-card.generic .cc-label { color: var(--white-30); }
+  .compare-card.metodo .cc-label { color: var(--orange-light); }
+  .compare-card h4 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .compare-card.generic h4 { color: var(--white-50); }
+  .compare-card.metodo h4 { color: #fff; }
+  .compare-card ul {
+    list-style: none;
+    font-size: 14px;
+    line-height: 2.1;
+  }
+  .compare-card.generic ul { color: var(--white-30); }
+  .compare-card.metodo ul { color: var(--white-70); }
+  .compare-card ul li { padding-left: 20px; position: relative; }
+  .compare-card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .compare-card.generic ul li::before { background: var(--white-08); }
+  .compare-card.metodo ul li::before { background: var(--orange); }
+  .compare-card .cc-result {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--white-08);
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .compare-card.generic .cc-result { color: var(--white-30); }
+  .compare-card.metodo .cc-result { color: var(--orange-light); }
+
+  /* Cycle visual */
+  .cycle-visual {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+  .cycle-block {
+    padding: 28px 36px;
+    border-radius: 14px;
+    text-align: center;
+    min-width: 220px;
+  }
+  .cycle-block.active {
+    background: rgba(252,76,2,0.12);
+    border: 1px solid rgba(252,76,2,0.25);
+  }
+  .cycle-block.next {
+    background: var(--white-05);
+    border: 1px solid var(--white-08);
+  }
+  .cycle-block .cb-weeks {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white-30);
+    margin-bottom: 6px;
+  }
+  .cycle-block.active .cb-weeks { color: var(--orange-light); }
+  .cycle-block .cb-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--white-50);
+  }
+  .cycle-block.active .cb-title { color: #fff; }
+  .cycle-block .cb-desc {
+    font-size: 12px;
+    color: var(--white-30);
+    margin-top: 4px;
+  }
+  .cycle-block.active .cb-desc { color: var(--white-50); }
+  .cycle-arrow {
+    font-size: 24px;
+    color: var(--white-12);
+    padding: 0 20px;
+  }
+
+  .method-why {
+    max-width: 600px;
+  }
+  .method-why h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .method-why ul {
+    list-style: none;
+    font-size: 14.5px;
+    color: var(--white-50);
+    line-height: 2;
+  }
+  .method-why ul li { padding-left: 20px; position: relative; }
+  .method-why ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--lavender);
+  }
+
+  /* ── TEST MAGGIO ── */
+  .test-section {
+    background: var(--cream);
+  }
+  .test-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+  .test-main {
+    background: #fff;
+    border-radius: 18px;
+    padding: 40px 36px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+  }
+  .test-main h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .test-main .tm-sub {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .test-main ul {
+    list-style: none;
+    font-size: 14.5px;
+    color: var(--text-soft);
+    line-height: 2;
+  }
+  .test-main ul li { padding-left: 20px; position: relative; }
+  .test-main ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .test-main .price-tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-top: 20px;
+  }
+
+  .nps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .nps-card {
+    border-radius: 14px;
+    padding: 28px 24px;
+  }
+  .nps-card.promoter {
+    background: linear-gradient(145deg, var(--navy) 0%, #001a45 100%);
+    color: #fff;
+  }
+  .nps-card.detractor {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.03);
+  }
+  .nps-card .nps-score {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .nps-card.detractor .nps-score { color: var(--text); }
+  .nps-card h4 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .nps-card.detractor h4 { color: var(--text); }
+  .nps-card p {
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .nps-card.promoter p { color: rgba(255,255,255,0.8); }
+  .nps-card.detractor p { color: var(--text-soft); }
+
+  /* Alert box */
+  .alert-box {
+    background: var(--tan-glow);
+    border-left: 3px solid var(--tan);
+    border-radius: 0 14px 14px 0;
+    padding: 28px 32px;
+    margin-top: 40px;
+    max-width: 700px;
+  }
+  .alert-box h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--tan);
+    margin-bottom: 8px;
+  }
+  .alert-box p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.75;
+  }
+
+  /* ── COMMUNICATE ── */
+  .comm-section {
+    background: var(--cream-deep);
+  }
+  .comm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .comm-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px 32px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.025);
+    position: relative;
+  }
+  .comm-card .comm-num {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+  }
+  .comm-card h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+    max-width: 85%;
+  }
+  .comm-card p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.75;
+  }
+  .comm-card .comm-example {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--orange);
+    line-height: 1.55;
+  }
+
+  /* ── TEAM ── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .team-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.025);
+    position: relative;
+    overflow: hidden;
+  }
+  .team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+  .team-card:nth-child(1)::before { background: var(--orange); }
+  .team-card:nth-child(2)::before { background: var(--lavender); }
+  .team-card:nth-child(3)::before { background: var(--tan); }
+  .team-card .tc-role {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .team-card h4 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .team-card p {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.7;
+  }
+  .team-card .tc-note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--orange-glow);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 500;
+  }
+  .team-support {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .team-support .team-card::before { background: var(--sand); }
+
+  /* ── NEXT STEPS ── */
+  .next-section {
+    background: var(--navy);
+    color: #fff;
+  }
+  .next-section .section-label { color: var(--orange-light); }
+  .next-section .section-title { color: #fff; }
+  .next-section .section-desc { color: var(--white-50); }
+  .next-list {
+    max-width: 620px;
+  }
+  .next-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--white-08);
+  }
+  .next-item:last-child { border-bottom: none; }
+  .next-item .ni-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--orange);
+    min-width: 36px;
+    line-height: 1.2;
+  }
+  .next-item .ni-content h4 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .next-item .ni-content p {
+    font-size: 13.5px;
+    color: var(--white-50);
+    line-height: 1.6;
+  }
+
+  .closing-note {
+    margin-top: 64px;
+    padding: 32px 36px;
+    background: rgba(252,76,2,0.08);
+    border: 1px solid rgba(252,76,2,0.15);
+    border-radius: 16px;
+    max-width: 620px;
+  }
+  .closing-note p {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    color: var(--white-70);
+    line-height: 1.55;
+  }
+  .closing-note .cn-sign {
+    margin-top: 16px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-style: normal;
+    color: var(--white-30);
+    letter-spacing: 1px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 32px 72px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.3); transform-origin: top; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    section, .hero, .method-section { padding-left: 40px; padding-right: 40px; }
+    .model-grid, .platform-grid, .test-grid, .comm-grid, .target-grid,
+    .method-compare, .vision-body, .vision-stats, .team-grid { grid-template-columns: 1fr; }
+    .nps-grid { grid-template-columns: 1fr; }
+    .plat-features { grid-template-columns: 1fr 1fr; }
+    .wants-row { grid-template-columns: repeat(3, 1fr); }
+    .hero-meta { flex-wrap: wrap; gap: 24px; }
+    .team-support { grid-template-columns: 1fr; }
+    .cycle-visual { flex-direction: column; gap: 12px; }
+    .cycle-arrow { transform: rotate(90deg); }
+  }
+  @media (max-width: 640px) {
+    section, .hero, .method-section { padding-left: 24px; padding-right: 24px; }
+    .hero { padding-top: 60px; padding-bottom: 60px; min-height: auto; }
+    .plat-features, .wants-row { grid-template-columns: 1fr; }
+    .footer { padding-left: 24px; padding-right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"></div>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<div class="hero">
+  <img src="assets/logo.png" alt="Martina Pro Aging Specialist" style="height: 120px; margin-bottom: 40px; animation: fadeUp 0.6s ease both;">
+  <div class="hero-eyebrow">Progetto MPAS</div>
+  <h1>Martina Pro Aging <em>Specialist</em></h1>
+  <p class="hero-subtitle">Tutto quello che devi sapere sulla piattaforma martinabindi.com, il metodo, il test di maggio e la strategia di comunicazione.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">Per<span>Martina Bindi</span></div>
+    <div class="hero-meta-item">Data<span>Aprile 2026</span></div>
+    <div class="hero-meta-item">Piattaforma<span>martinabindi.com</span></div>
+    <div class="hero-meta-item">Stato<span>Pronta, non live</span></div>
+  </div>
+  <div class="hero-scroll">Scorri</div>
+</div>
+
+<!-- ════════════════════ LA VISIONE ════════════════════ -->
+<section>
+  <div class="section-label reveal">La visione</div>
+  <h2 class="section-title reveal reveal-delay-1">Una piattaforma pro-aging pensata per te</h2>
+  <p class="section-desc reveal reveal-delay-2">martinabindi.com &egrave; il tuo programma pro-aging personale: esercizi corpo, massaggi viso e percorsi strutturati per donne in menopausa che vogliono tornare a riconoscersi.</p>
+
+  <div class="vision-stats reveal reveal-delay-3">
+    <div class="stat-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Utenti attivi. La piattaforma &egrave; pronta ma non ancora aperta al pubblico.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">&euro;97</div>
+      <div class="stat-label">Prezzo del primo test. Una tantum, lista ristretta, poi si chiude.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">Mag '26</div>
+      <div class="stat-label">Primo test. Posizionamento: &ldquo;preparazione all'estate&rdquo;.</div>
+    </div>
+  </div>
+
+  <div class="vision-body reveal">
+    <p><strong>Non &egrave; un canale YouTube.</strong> Non &egrave; un archivio di video. &Egrave; un programma strutturato giorno per giorno, con livelli di intensit&agrave; e percorsi progressivi. L'utente sa esattamente cosa fare ogni giorno.</p>
+    <p><strong>YouTube ti ha fatto conoscere Martina. La piattaforma &egrave; il passo successivo.</strong> Qui il percorso diventa strutturato, personale e pensato per il corpo di una donna in menopausa &mdash; sicuro, calibrato, efficace. Il viso non lo fa nessuno cos&igrave;.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ IL TARGET ════════════════════ -->
+<section class="target-section">
+  <div class="section-label reveal">Il target</div>
+  <h2 class="section-title reveal reveal-delay-1">Chi &egrave; Genoveffa</h2>
+  <p class="section-desc reveal reveal-delay-2">Il profilo della donna a cui parliamo. Non una persona immaginaria &mdash; &egrave; la sintesi delle tue clienti reali.</p>
+
+  <div class="target-grid">
+    <div class="target-profile reveal">
+      <div class="tp-name">Genoveffa</div>
+      <div class="tp-demo">48&ndash;60 anni &middot; professionista &middot; reddito medio-alto &middot; peri o post menopausa</div>
+      <div class="tp-desc">Ha avuto una vita attiva, ma con la menopausa qualcosa &egrave; cambiato. Non si riconosce pi&ugrave;. Il corpo risponde diversamente, l'energia non &egrave; quella di prima. Si sente appesantita, rigida, affaticata &mdash; e sa che dovrebbe fare qualcosa, ma non sa cosa funzioni per lei adesso. Ha gi&agrave; provato palestra, app, corsi &mdash; ha mollato ogni volta.</div>
+      <div class="tp-quote">&ldquo;Si guarda allo specchio e non si riconosce. Si sente pi&ugrave; vecchia di come si sente dentro.&rdquo;</div>
+    </div>
+
+    <div class="target-pain reveal reveal-delay-1">
+      <div class="pain-card">
+        <h4>Dolori della menopausa</h4>
+        <ul>
+          <li>Affaticamento cronico &mdash; meno energia di prima</li>
+          <li>Appesantimento, gonfiore, ritenzione</li>
+          <li>Rigidit&agrave; articolare, corpo &ldquo;bloccato&rdquo; al mattino</li>
+          <li>Perdita di tono nel viso, aspetto stanco</li>
+        </ul>
+      </div>
+      <div class="pain-card">
+        <h4>Frustrazioni col fitness</h4>
+        <ul>
+          <li>Allenamenti troppo lunghi o troppo intensi</li>
+          <li>Troppe scelte &mdash; non sa cosa fare e quando</li>
+          <li>Paura di farsi male o di eseguire male</li>
+          <li>Ha mollato tante volte, non si fida pi&ugrave; di s&eacute;</li>
+        </ul>
+      </div>
+      <div class="pain-card">
+        <h4>Cosa ha gi&agrave; provato</h4>
+        <ul>
+          <li>Palestra &mdash; si sente fuori posto</li>
+          <li>Corsi collettivi &mdash; ritmo non suo</li>
+          <li>App e YouTube &mdash; troppa scelta, nessuna guida</li>
+          <li>Niente &mdash; la scelta di default</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="wants-row reveal">
+    <div class="want-card">
+      <div class="want-num">1</div>
+      <p>Sapere esattamente cosa fare ogni giorno</p>
+    </div>
+    <div class="want-card">
+      <div class="want-num">2</div>
+      <p>Poco tempo: da 5 a 30 minuti</p>
+    </div>
+    <div class="want-card">
+      <div class="want-num">3</div>
+      <p>Esercizi sicuri per il suo corpo adesso</p>
+    </div>
+    <div class="want-card">
+      <div class="want-num">4</div>
+      <p>Risultati visibili su corpo e viso</p>
+    </div>
+    <div class="want-card">
+      <div class="want-num">5</div>
+      <p>Non sentirsi sola: una guida, non un archivio</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ LA PIATTAFORMA ════════════════════ -->
+<section>
+  <div class="section-label reveal">La piattaforma</div>
+  <h2 class="section-title reveal reveal-delay-1">Cosa c'&egrave; su martinabindi.com</h2>
+  <p class="section-desc reveal reveal-delay-2">Due percorsi principali &mdash; corpo e viso &mdash; con struttura giornaliera, livelli di intensit&agrave; e tracking del progresso.</p>
+
+  <div class="platform-grid reveal reveal-delay-3">
+    <div class="plat-card corpo">
+      <div class="plat-badge">Percorso principale</div>
+      <h3>Percorso Corpo</h3>
+      <div class="plat-sub">Routine dal luned&igrave; al sabato, 3 livelli</div>
+      <ul>
+        <li>3 livelli: Sedia / Base / Avanzato</li>
+        <li>Formato Pillole per chi ha poco tempo</li>
+        <li>Focus giornalieri opzionali (zone mirate)</li>
+        <li>Durata: da 5 a 30 minuti</li>
+        <li>Accessori minimi: tappetino, sedia, acqua</li>
+      </ul>
+    </div>
+
+    <div class="plat-card viso">
+      <div class="plat-badge">Percorso complementare</div>
+      <h3>Percorso Viso</h3>
+      <div class="plat-sub">Ciclo 7 giorni, massaggi ed esercizi</div>
+      <ul>
+        <li>Ciclo: Drenaggio &rarr; Ossigenazione &rarr; Tonificazione &rarr; Pausa</li>
+        <li>Aree: viso completo, contorno occhi, collo</li>
+        <li>Focus giornalieri opzionali</li>
+        <li>Introduzione + 7 giorni ciclici</li>
+        <li>Tracking completamento 0&ndash;100%</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="plat-features reveal">
+    <div class="plat-feat">
+      <h4>Allenamento del giorno</h4>
+      <p>7 card giornaliere in homepage. L'utente apre la piattaforma e sa subito cosa fare oggi.</p>
+    </div>
+    <div class="plat-feat">
+      <h4>Scelta livello</h4>
+      <p>All'ingresso l'utente sceglie il suo livello. Pu&ograve; cambiare in qualsiasi momento.</p>
+    </div>
+    <div class="plat-feat">
+      <h4>Tracking progresso</h4>
+      <p>Ogni percorso mostra il completamento 0&ndash;100%. L'utente vede dove sta andando.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ IL METODO ════════════════════ -->
+<section class="method-section">
+  <div class="section-label reveal">Il metodo</div>
+  <h2 class="section-title reveal reveal-delay-1">La ripetizione &egrave; il metodo</h2>
+  <p class="section-desc reveal reveal-delay-2">Gli esercizi sulla piattaforma si ripetono identici ogni settimana per 2 mesi. Non &egrave; un limite &mdash; &egrave; la scelta che fa funzionare tutto il resto.</p>
+
+  <div class="method-quote reveal">&ldquo;Un esercizio fatto bene vale pi&ugrave; di cento fatti male. Solo la ripetizione porta alla padronanza &mdash; e solo la padronanza porta ai risultati.&rdquo;</div>
+
+  <div class="method-compare reveal">
+    <div class="compare-card generic">
+      <div class="cc-label">YouTube — Acquisizione</div>
+      <h4>Conosci Martina, scopri il pro-aging</h4>
+      <ul>
+        <li>Video liberi per farti conoscere il metodo</li>
+        <li>Variet&agrave; di contenuti e temi</li>
+        <li>Accesso gratuito, senza impegno</li>
+        <li>27.000 iscritte che gi&agrave; seguono Martina</li>
+        <li>Il primo passo nel mondo pro-aging</li>
+      </ul>
+      <div class="cc-result">Il punto di partenza</div>
+    </div>
+
+    <div class="compare-card metodo">
+      <div class="cc-label">Piattaforma — Il passo successivo</div>
+      <h4>Il tuo percorso pro-aging strutturato</h4>
+      <ul>
+        <li>Ogni giorno ha il suo esercizio specifico</li>
+        <li>Luned&igrave; = luned&igrave;, sempre, per 2 mesi</li>
+        <li>Tempo di memorizzare e perfezionare</li>
+        <li>Esecuzione corretta = risultati reali</li>
+        <li>Dopo 2 mesi: nuovi esercizi, nuovo ciclo</li>
+      </ul>
+      <div class="cc-result">Dove arrivano i risultati veri</div>
+    </div>
+  </div>
+
+  <div class="cycle-visual reveal">
+    <div class="cycle-block active">
+      <div class="cb-weeks">Settimane 1&ndash;8</div>
+      <div class="cb-title">Primo ciclo</div>
+      <div class="cb-desc">Stesso programma &rarr; padronanza</div>
+    </div>
+    <div class="cycle-arrow">&rarr;</div>
+    <div class="cycle-block next">
+      <div class="cb-weeks">Settimane 9&ndash;16</div>
+      <div class="cb-title">Secondo ciclo</div>
+      <div class="cb-desc">Nuovi esercizi &rarr; evoluzione</div>
+    </div>
+    <div class="cycle-arrow">&rarr;</div>
+    <div class="cycle-block next">
+      <div class="cb-weeks">Settimane 17+</div>
+      <div class="cb-title">Terzo ciclo</div>
+      <div class="cb-desc">Progressione continua</div>
+    </div>
+  </div>
+
+  <div class="method-why reveal">
+    <h3>Perch&eacute; funziona</h3>
+    <ul>
+      <li>La donna in menopausa deve memorizzare gli esercizi per eseguirli in modo corretto e sicuro</li>
+      <li>L'esecuzione corretta &egrave; la condizione necessaria per ottenere risultati reali e duraturi</li>
+      <li>La variet&agrave; dentro la settimana c'&egrave;: ogni giorno ha un esercizio diverso</li>
+      <li>La variet&agrave; nel tempo c'&egrave;: ogni 2 mesi tutto cambia</li>
+      <li>YouTube &egrave; la scoperta &mdash; la piattaforma &egrave; dove il percorso diventa strutturato e personale</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════ TEST MAGGIO 2026 ════════════════════ -->
+<section class="test-section">
+  <div class="section-label reveal">Il test</div>
+  <h2 class="section-title reveal reveal-delay-1">Maggio 2026 &mdash; &ldquo;Preparazione all'estate&rdquo;</h2>
+  <p class="section-desc reveal reveal-delay-2">Il primo test della piattaforma. Non &egrave; un lancio &mdash; &egrave; una validazione a pagamento con un gruppo ristretto.</p>
+
+  <div class="test-grid reveal reveal-delay-3">
+    <div class="test-main">
+      <h3>Come funziona</h3>
+      <div class="tm-sub">Accesso a pagamento, lista ristretta, poi si chiude</div>
+      <ul>
+        <li>Accesso a lista ristretta, non aperto a tutti</li>
+        <li>Attivazione primaria: acquirenti Pass Primavera Premium</li>
+        <li>Posizionamento: &ldquo;preparazione all'estate&rdquo;</li>
+        <li>Accesso alla piattaforma completa per il periodo di test</li>
+        <li>Dopo il test si chiude fino a nuovo ordine</li>
+      </ul>
+      <div class="price-tag">&euro;97</div>
+    </div>
+
+    <div>
+      <div class="section-label" style="margin-bottom: 16px;">Post-test: NPS</div>
+      <div class="nps-grid">
+        <div class="nps-card promoter">
+          <div class="nps-score">&gt; 9</div>
+          <h4>Promoter</h4>
+          <p>Richiesta video-recensione, in cambio di prodotti bSoul o periodo di accesso pi&ugrave; lungo. Diventa testimonial.</p>
+        </div>
+        <div class="nps-card detractor">
+          <div class="nps-score">&lt; 9</div>
+          <h4>Da migliorare</h4>
+          <p>Contatto diretto: call, email o WhatsApp. Capire cosa non ha funzionato e migliorare prima del lancio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box reveal">
+    <h4>Attenzione &mdash; punto critico</h4>
+    <p>Il test dura circa 2 mesi, cio&egrave; esattamente un ciclo di esercizi. Le tester sperimenteranno solo la ripetizione, senza mai vivere il cambio di esercizi. &Egrave; fondamentale comunicare chiaramente che stanno testando il primo ciclo, e che il secondo ciclo (con esercizi nuovi) arriver&agrave; dopo.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ COMUNICARE IL METODO ════════════════════ -->
+<section class="comm-section">
+  <div class="section-label reveal">Comunicazione</div>
+  <h2 class="section-title reveal reveal-delay-1">Come trasmettere il metodo</h2>
+  <p class="section-desc reveal reveal-delay-2">Se la ripetizione &egrave; una sorpresa, &egrave; un difetto. Se &egrave; dichiarata e spiegata, &egrave; una scelta autorevole.</p>
+
+  <div class="comm-grid reveal reveal-delay-3">
+    <div class="comm-card">
+      <div class="comm-num">01</div>
+      <h4>&ldquo;Programma&rdquo;, non &ldquo;video&rdquo;</h4>
+      <p>Un video lo guardi una volta. Un programma lo segui. Cambiare il frame cambia l'aspettativa: nessuno si lamenta che il programma di fisioterapia ripeta gli stessi esercizi.</p>
+      <div class="comm-example">&ldquo;Non &egrave; un archivio di video &mdash; &egrave; un programma pro-aging strutturato in cicli.&rdquo;</div>
+    </div>
+
+    <div class="comm-card">
+      <div class="comm-num">02</div>
+      <h4>Dichiarare il metodo prima dell'acquisto</h4>
+      <p>L'utente deve capire che la ripetizione &egrave; il metodo prima di pagare. Se lo scopre dopo, &egrave; una delusione. Se lo sa prima, &egrave; una scelta consapevole.</p>
+      <div class="comm-example">&ldquo;Il programma funziona per cicli di 2 mesi. Ogni ciclo ha esercizi specifici che ripeti finch&eacute; non li padroneggi. Dopo 2 mesi, nuovi esercizi, nuovo ciclo.&rdquo;</div>
+    </div>
+
+    <div class="comm-card">
+      <div class="comm-num">03</div>
+      <h4>Sfruttare la paura di sbagliare</h4>
+      <p>Genoveffa ha paura di farsi male e di non eseguire correttamente. La ripetizione risponde esattamente a quel bisogno: tempo per imparare, sicurezza nell'esecuzione.</p>
+      <div class="comm-example">&ldquo;Su YouTube scopri il pro-aging. Sulla piattaforma lo fai diventare il tuo percorso: esercizi strutturati, esecuzione perfetta, risultati veri.&rdquo;</div>
+    </div>
+
+    <div class="comm-card">
+      <div class="comm-num">04</div>
+      <h4>Rendere visibile il progresso</h4>
+      <p>La ripetizione diventa noiosa quando non si percepisce avanzamento. Il tracking 0&ndash;100% aiuta. In pi&ugrave;: suggerire il passaggio al livello successivo e usare i Focus come variet&agrave; opzionale.</p>
+      <div class="comm-example">&ldquo;I livelli sono la tua progressione. Quando un esercizio diventa naturale, &egrave; il momento di salire.&rdquo;</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ IL TEAM ════════════════════ -->
+<section>
+  <div class="section-label reveal">Il team</div>
+  <h2 class="section-title reveal reveal-delay-1">Chi fa cosa</h2>
+  <p class="section-desc reveal reveal-delay-2">Il team MPAS &egrave; un sottoinsieme del team bSoul. Nessuna risorsa &egrave; dedicata esclusivamente &mdash; priorit&agrave; e carichi vanno coordinati.</p>
+
+  <div class="team-grid reveal reveal-delay-3">
+    <div class="team-card">
+      <div class="tc-role">PM / Strategia</div>
+      <h4>Niccol&ograve;</h4>
+      <p>Project management, coordinamento, strategia business e marketing, automazioni, allineamento con bSoul.</p>
+    </div>
+    <div class="team-card">
+      <div class="tc-role">Volto del brand</div>
+      <h4>Martina</h4>
+      <p>Protagonista di tutti i video e percorsi. Volto della piattaforma. Decide temi e direzione dei contenuti.</p>
+      <div class="tc-note">Condivisa con bSoul &mdash; non sovraccaricare</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-role">Produzione video</div>
+      <h4>Suyen</h4>
+      <p>Registrazione, montaggio, pubblicazione video. Thumbnail e materiali grafici. Si coordina con Martina per le sessioni.</p>
+    </div>
+  </div>
+
+  <div class="team-support reveal">
+    <div class="team-card">
+      <div class="tc-role">Supporto tech</div>
+      <h4>Alberto</h4>
+      <p>WooCommerce, piattaforma martinabindi.com, supporto tecnico e interfaccia con agenzia di sviluppo.</p>
+    </div>
+    <div class="team-card">
+      <div class="tc-role">Supporto copy</div>
+      <h4>Silvia</h4>
+      <p>Copy per email, landing page e comunicazioni. Non dedicata a MPAS &mdash; disponibile su richiesta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ PROSSIMI PASSI ════════════════════ -->
+<section class="next-section">
+  <div class="section-label reveal">Prossimi passi</div>
+  <h2 class="section-title reveal reveal-delay-1">Cosa serve prima di maggio</h2>
+  <p class="section-desc reveal reveal-delay-2">Le decisioni e azioni necessarie per lanciare il test.</p>
+
+  <div class="next-list reveal reveal-delay-3">
+    <div class="next-item">
+      <div class="ni-num">1</div>
+      <div class="ni-content">
+        <h4>Definire la comunicazione del metodo</h4>
+        <p>Come spieghiamo la ripetizione? Dove lo diciamo? Testo per landing page, email, materiale promozionale.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="ni-num">2</div>
+      <div class="ni-content">
+        <h4>Definire la lista tester</h4>
+        <p>Chi ha comprato il Pass Primavera Premium? Quanti sono? Come li contattiamo?</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="ni-num">3</div>
+      <div class="ni-content">
+        <h4>Preparare i materiali di attivazione</h4>
+        <p>Email di invito, pagina di acquisto, messaggio di benvenuto sulla piattaforma.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="ni-num">4</div>
+      <div class="ni-content">
+        <h4>Setup tecnico con Alberto</h4>
+        <p>Accesso, pagamento, limiti utenti, chiusura iscrizioni post-test.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="ni-num">5</div>
+      <div class="ni-content">
+        <h4>Definire il processo NPS</h4>
+        <p>Tool o manuale? Chi contatta le tester? Template per la richiesta video-recensione.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing-note reveal">
+    <p>Questo &egrave; un test, non un lancio. L'obiettivo non &egrave; fare revenue &mdash; &egrave; capire se il prodotto funziona, raccogliere feedback reali, e costruire le prime testimonianze.</p>
+    <div class="cn-sign">&mdash; Progetto MPAS, Aprile 2026</div>
+  </div>
+</section>
+
+<div class="footer">
+  Presentazione progetto MPAS &mdash; Documento interno &mdash; Aprile 2026
+</div>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.querySelector('.progress-bar').style.width = progress + '%';
+  }, { passive: true });
+</script>
+
+</body>
+</html>
